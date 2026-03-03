@@ -1,0 +1,18 @@
+{
+  "name": "Restore Policy",
+  "short_name": "Restore",
+  "description": "Read and browse policy announcements by category.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0a1d37",
+  "icons": [
+    {
+      "src": "/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

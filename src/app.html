@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Restore Policy</title>
+    <meta name="description" content="Track and read policy announcements in one place." />
+    <meta name="theme-color" content="#0a1d37" />
+    <meta name="apple-mobile-web-app-title" content="Restore Policy" />
+    <meta name="application-name" content="Restore Policy" />
+    <link rel="icon" href="%sveltekit.assets%/logo.jpg" />
+    <link rel="apple-touch-icon" href="%sveltekit.assets%/logo.jpg" />
+    <link rel="manifest" href="%sveltekit.assets%/site.webmanifest" />
+    %sveltekit.head%
+    <style>
+      @font-face {
+        font-display: swap;
+        font-family: 'Poppins';
+        font-style: normal;
+        font-weight: 400;
+        src: url('%sveltekit.assets%/fonts/poppins-regular-webfont.woff2') format('woff2');
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Poppins', sans-serif;
+      }
+    </style>
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents">%sveltekit.body%</div>
+  </body>
+</html>
