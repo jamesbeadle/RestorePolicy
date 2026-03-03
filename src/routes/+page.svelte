@@ -127,6 +127,7 @@
           </details>
         {/each}
 
+        <p class="results-count">{filteredPolicies.length} results</p>
         <div class="pagination">
           <button
             type="button"
@@ -137,7 +138,7 @@
             Previous
           </button>
           <p class="page-info">
-            Page {currentPage} of {totalPages} ({filteredPolicies.length} results)
+            Page {currentPage} of {totalPages}
           </p>
           <button
             type="button"
