@@ -5,6 +5,8 @@
   let searchKeyword = $state('');
   let announcedFrom = $state('');
   let announcedTo = $state('');
+  let currentPage = $state(1);
+  const pageSize = 12;
 
   const allCategoryOptions = ['All categories', ...categories];
 
@@ -31,6 +33,26 @@
 
       return matchesCategory && matchesKeyword && matchesFrom && matchesTo;
     });
+  });
+
+  const totalPages = $derived(Math.max(1, Math.ceil(filteredPolicies.length / pageSize)));
+  const paginatedPolicies = $derived(
+    filteredPolicies.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  );
+
+  $effect(() => {
+    selectedCategory;
+    searchKeyword;
+    announcedFrom;
+    announcedTo;
+    currentPage = 1;
+  });
+
+  $effect(() => {
+    const maxPage = totalPages;
+    if (currentPage > maxPage) {
+      currentPage = maxPage;
+    }
   });
 
   const formatAnnounced = (dateString: string) => {
@@ -90,7 +112,7 @@
       {#if filteredPolicies.length === 0}
         <div class="empty">No policies found for this category.</div>
       {:else}
-        {#each filteredPolicies as policy}
+        {#each paginatedPolicies as policy}
           <details class="policy-accordion">
             <summary>
               <span class="summary-title">{policy.title}</span>
@@ -104,6 +126,28 @@
             </div>
           </details>
         {/each}
+
+        <div class="pagination">
+          <button
+            type="button"
+            class="page-button"
+            onclick={() => (currentPage = Math.max(1, currentPage - 1))}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <p class="page-info">
+            Page {currentPage} of {totalPages} ({filteredPolicies.length} results)
+          </p>
+          <button
+            type="button"
+            class="page-button"
+            onclick={() => (currentPage = Math.min(totalPages, currentPage + 1))}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
       {/if}
     </section>
   </div>

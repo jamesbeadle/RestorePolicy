@@ -175,6 +175,35 @@ summary::-webkit-details-marker {
   color: var(--white);
 }
 
+.pagination {
+  margin-top: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.page-button {
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--white);
+  border-radius: 0.7rem;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.page-button:disabled {
+  opacity: 0.45;
+}
+
+.page-info {
+  margin: 0;
+  text-align: center;
+  color: #dbeaff;
+  font-size: 0.9rem;
+}
+
 @media (min-width: 768px) {
   .container {
     padding: 1.5rem;
@@ -195,5 +224,11 @@ summary::-webkit-details-marker {
   .date-filters {
     grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
+  }
+
+  .pagination {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 }
