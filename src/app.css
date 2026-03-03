@@ -1,8 +1,10 @@
 :root {
-  --brand: #0a1d37;
+  --brand: #00275b;
   --white: #ffffff;
-  --border: #d5deeb;
-  --soft: #edf2f9;
+  --card: #0d376b;
+  --card-soft: #1a4b86;
+  --border: #71a9d9;
+  --accent: #6ba6d9;
 }
 
 * {
@@ -11,19 +13,17 @@
 
 body {
   min-height: 100vh;
-  background: var(--white);
-  color: var(--brand);
+  background: var(--brand);
+  color: var(--white);
 }
 
 a {
-  color: var(--brand);
+  color: var(--white);
 }
 
 .page {
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top right, #dfe8f5 0%, rgba(223, 232, 245, 0) 40%),
-    linear-gradient(180deg, #f9fbff 0%, #ffffff 60%);
+  background: var(--brand);
 }
 
 .container {
@@ -33,9 +33,10 @@ a {
 }
 
 .header {
-  background: var(--brand);
-  color: var(--white);
+  background: var(--white);
+  color: var(--brand);
   border-radius: 1rem;
+  border: 1px solid #d8e0ed;
   padding: 1rem;
   display: flex;
   align-items: center;
@@ -43,11 +44,12 @@ a {
 }
 
 .logo {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 999px;
   object-fit: cover;
-  background: var(--white);
+  border: 1px solid #c2d2e7;
+  background: #edf3fb;
 }
 
 .title {
@@ -57,7 +59,6 @@ a {
 
 .subtitle {
   margin: 0.1rem 0 0;
-  opacity: 0.9;
   font-size: 0.9rem;
 }
 
@@ -68,7 +69,7 @@ a {
 }
 
 label {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 600;
 }
 
@@ -79,8 +80,28 @@ select {
   border-radius: 0.75rem;
   padding: 0.75rem;
   font-size: 1rem;
-  background: var(--white);
-  color: var(--brand);
+  background: var(--card);
+  color: var(--white);
+}
+
+input[type='search'],
+input[type='date'] {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  font-size: 1rem;
+  background: var(--card);
+  color: var(--white);
+}
+
+input::placeholder {
+  color: #d2e4fb;
+}
+
+.date-filters {
+  display: grid;
+  gap: 0.5rem;
 }
 
 .results {
@@ -89,48 +110,69 @@ select {
   gap: 0.75rem;
 }
 
-.card {
-  background: var(--white);
+.policy-accordion {
+  background: var(--card);
   border: 1px solid var(--border);
   border-radius: 1rem;
+  overflow: hidden;
+}
+
+.policy-accordion[open] {
+  background: var(--card-soft);
+}
+
+summary {
+  list-style: none;
+  cursor: pointer;
   padding: 1rem;
+  display: grid;
+  gap: 0.35rem;
 }
 
-.card h2 {
-  margin: 0 0 0.6rem;
-  font-size: 1.05rem;
+summary::-webkit-details-marker {
+  display: none;
 }
 
-.meta {
-  margin: 0 0 0.6rem;
+.summary-title {
+  font-size: 1.03rem;
+  font-weight: 600;
+}
+
+.summary-meta {
   font-size: 0.85rem;
-  color: #2d4367;
+  color: #dbeaff;
+}
+
+.accordion-content {
+  padding: 0 1rem 1rem;
 }
 
 .detail {
   margin: 0;
   line-height: 1.45;
-  font-size: 0.94rem;
+  font-size: 0.95rem;
+  color: #f6f9ff;
 }
 
 .source {
   display: inline-block;
   margin-top: 0.85rem;
   text-decoration: none;
-  background: var(--brand);
+  background: var(--accent);
   color: var(--white);
   border-radius: 999px;
   padding: 0.45rem 0.85rem;
   font-size: 0.84rem;
+  font-weight: 600;
 }
 
 .empty {
-  border: 1px dashed var(--border);
+  border: 1px dashed var(--accent);
   border-radius: 1rem;
   padding: 1rem;
   text-align: center;
-  background: var(--soft);
-  color: #244165;
+  background: #0e3b70;
+  color: var(--white);
 }
 
 @media (min-width: 768px) {
@@ -146,7 +188,12 @@ select {
     font-size: 1.45rem;
   }
 
-  .card h2 {
+  .summary-title {
     font-size: 1.15rem;
+  }
+
+  .date-filters {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
   }
 }

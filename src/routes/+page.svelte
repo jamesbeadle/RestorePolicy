@@ -2,21 +2,49 @@
   import { categories, policies } from '$lib/data/policies';
 
   let selectedCategory = $state('All categories');
+  let searchKeyword = $state('');
+  let announcedFrom = $state('');
+  let announcedTo = $state('');
 
   const allCategoryOptions = ['All categories', ...categories];
 
-  const filteredPolicies = $derived(
-    selectedCategory === 'All categories'
-      ? policies
-      : policies.filter((policy) => policy.category === selectedCategory)
-  );
+  const filteredPolicies = $derived.by(() => {
+    const keyword = searchKeyword.trim().toLowerCase();
 
-  const formatAnnounced = (dateString: string) =>
-    new Intl.DateTimeFormat('en-GB', {
+    return policies.filter((policy) => {
+      const matchesCategory =
+        selectedCategory === 'All categories' || policy.category === selectedCategory;
+
+      const matchesKeyword =
+        keyword.length === 0 ||
+        policy.title.toLowerCase().includes(keyword) ||
+        policy.detail.toLowerCase().includes(keyword) ||
+        policy.category.toLowerCase().includes(keyword);
+
+      const announcedDate = new Date(policy.announced);
+      const hasValidDate = !Number.isNaN(announcedDate.getTime());
+      const fromDate = announcedFrom ? new Date(announcedFrom) : null;
+      const toDate = announcedTo ? new Date(announcedTo) : null;
+
+      const matchesFrom = fromDate ? hasValidDate && announcedDate >= fromDate : true;
+      const matchesTo = toDate ? hasValidDate && announcedDate <= toDate : true;
+
+      return matchesCategory && matchesKeyword && matchesFrom && matchesTo;
+    });
+  });
+
+  const formatAnnounced = (dateString: string) => {
+    const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) {
+      return 'Unknown';
+    }
+
+    return new Intl.DateTimeFormat('en-GB', {
       day: '2-digit',
       month: 'short',
       year: 'numeric'
-    }).format(new Date(dateString));
+    }).format(date);
+  };
 </script>
 
 <div class="page">
@@ -36,6 +64,26 @@
           <option value={category}>{category}</option>
         {/each}
       </select>
+
+      <label for="keyword">Keyword search</label>
+      <input
+        id="keyword"
+        type="search"
+        bind:value={searchKeyword}
+        placeholder="Search policy text..."
+        autocomplete="off"
+      />
+
+      <div class="date-filters">
+        <div>
+          <label for="announced-from">Announced from</label>
+          <input id="announced-from" type="date" bind:value={announcedFrom} />
+        </div>
+        <div>
+          <label for="announced-to">Announced to</label>
+          <input id="announced-to" type="date" bind:value={announcedTo} />
+        </div>
+      </div>
     </section>
 
     <section class="results" aria-live="polite">
@@ -43,16 +91,18 @@
         <div class="empty">No policies found for this category.</div>
       {:else}
         {#each filteredPolicies as policy}
-          <article class="card">
-            <h2>{policy.title}</h2>
-            <p class="meta">
-              {policy.category} | Announced: {formatAnnounced(policy.announced)}
-            </p>
-            <p class="detail">{policy.detail}</p>
-            <a class="source" href={policy.sourceUrl} target="_blank" rel="noreferrer">
-              {policy.sourceLabel}
-            </a>
-          </article>
+          <details class="policy-accordion">
+            <summary>
+              <span class="summary-title">{policy.title}</span>
+              <span class="summary-meta">{policy.category} | Announced: {formatAnnounced(policy.announced)}</span>
+            </summary>
+            <div class="accordion-content">
+              <p class="detail">{policy.detail}</p>
+              <a class="source" href={policy.sourceUrl} target="_blank" rel="noreferrer">
+                {policy.sourceLabel}
+              </a>
+            </div>
+          </details>
         {/each}
       {/if}
     </section>
